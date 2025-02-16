@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping List</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            text-align: center; 
+        }
+        input, button { 
+            margin: 5px; 
+            padding: 5px; 
+        }
+        ul { 
+            list-style-type: none; 
+            padding: 0; 
+        }
+        li { 
+            margin: 5px 0; 
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        function ShoppingList() {
+            const [items, setItems] = React.useState([]);
+            const [name, setName] = React.useState("");
+            const [quantity, setQuantity] = React.useState(1);
+
+            function handleAdd() {
+                if (!name.trim() || quantity < 1) {
+                    alert("Please enter a valid item and quantity!");
+                    return;
+                }
+                const newItem = { id: Math.random(), name, quantity };
+                setItems([...items, newItem]);
+                setName("");
+                setQuantity(1);
+            }
+            function handleRemove(id) {
+                setItems(items.filter(item => item.id !== id));
+            }
+            function handleClear() {
+                setItems([]);
+            }
+            return (
+                <div>
+                    <h1>Shopping List</h1>
+                    <input 
+                        type="text" 
+                        placeholder="Item name" 
+                        value={name} 
+                        onChange={(e) => setName(e.target.value)}
+                    />
+                    <input 
+                        type="number" 
+                        value={quantity} 
+                        min="1" 
+                        onChange={(e) => setQuantity(Number(e.target.value))}
+                    />
+                    <button onClick={handleAdd}>Add Item</button>
+                    <button onClick={handleClear} disabled={items.length === 0}>Clear All</button>
+                    <ul>
+                        {items.map(item => (
+                            <li key={item.id}>
+                                {item.name} - {item.quantity} 
+                                <button onClick={() => handleRemove(item.id)}>Remove</button>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            );
+        }
+
+        ReactDOM.createRoot(document.getElementById("root")).render(<ShoppingList />);
+    </script>
+</body>
+</html>

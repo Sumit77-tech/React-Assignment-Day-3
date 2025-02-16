@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List (Debugged)</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            text-align: center; 
+        }
+        input, button { 
+            margin: 5px; 
+            padding: 5px; 
+        }
+        ul { 
+            list-style-type: none; 
+            padding: 0; 
+        }
+        li { 
+            margin: 5px 0; 
+            cursor: pointer; 
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+        function TodoList() {
+            const [tasks, setTasks] = React.useState([]);
+            const [task, setTask] = React.useState("");
+
+            function handleAddTask() {
+                if (!task.trim()) {
+                    alert("Task cannot be empty!");
+                    return;
+                }
+                const newTask = { id: Date.now(), text: task, completed: false };
+                setTasks([...tasks, newTask]);
+                setTask("");
+            }
+            function toggleTaskCompletion(id) {
+                setTasks(tasks.map(t => 
+                    t.id === id ? { ...t, completed: !t.completed } : t
+                ));
+            }
+            function handleDeleteTask(id) {
+                setTasks(tasks.filter(t => t.id !== id));
+            }
+            return (
+                <div>
+                    <h1>To-Do List</h1>
+                    <input 
+                        type="text" 
+                        placeholder="Enter task..." 
+                        value={task} 
+                        onChange={(e) => setTask(e.target.value)}
+                    />
+                    <button onClick={handleAddTask}>Add Task</button>
+                    
+                    <ul>
+                        {tasks.map(item => (
+                            <li key={item.id} 
+                                onClick={() => toggleTaskCompletion(item.id)} 
+                                style={{ textDecoration: item.completed ? "line-through" : "none" }}
+                            >
+                                {item.text} 
+                                <button onClick={() => handleDeleteTask(item.id)}>Delete</button>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            );
+        }
+        const root = ReactDOM.createRoot(document.getElementById("root")).render(<TodoList />);
+    </script>
+</body>
+</html>

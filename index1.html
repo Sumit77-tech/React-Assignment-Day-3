@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Counter with Step Control</title>
+    <!-- React and Babel CDN -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+        function Counter() {
+            const [count, setCount] = React.useState(0);
+            const [step, setStep] = React.useState(1);
+
+            function handleIncrease() {
+                setCount(count + step);
+            }
+            function handleDecrease() {
+                setCount(prevCount => Math.max(0, prevCount - step));
+            }
+            function handleStepChange(e) {
+                const value = parseInt(e.target.value, 10);
+                setStep(isNaN(value) ? 1 : value);
+            }
+            return (
+                <div style={{ textAlign: "center", marginTop: "50px" }}>
+                    <h1>Counter: {count}</h1>
+                    <label>
+                        Step:
+                        <input 
+                            type="number" 
+                            value={step} 
+                            onChange={handleStepChange} 
+                            min="1"
+                            style={{ marginLeft: "10px", width: "50px" }}
+                        />
+                    </label>
+                    <br /><br />
+                    <button onClick={handleIncrease}>Increase</button>
+                    <button onClick={handleDecrease} style={{ marginLeft: "10px" }}>Decrease</button>
+                </div>
+            );
+        }
+
+        ReactDOM.createRoot(document.getElementById("root")).render(<Counter />);
+    </script>
+</body>
+</html>

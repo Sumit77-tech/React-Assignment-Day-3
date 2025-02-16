@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toggle Theme (Light/Dark Mode)</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            text-align: center; 
+        }
+        .container { 
+            padding: 20px; 
+            min-height: 100vh; 
+            transition: all 0.3s ease-in-out; 
+        }
+        .light { 
+            background-color: white; 
+            color: black; 
+        }
+        .dark { 
+            background-color: black; 
+            color: white; 
+        }
+        button { 
+            padding: 10px 20px; 
+            margin-top: 20px; 
+            cursor: pointer; 
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+        function ToggleTheme() {
+            const [isDark, setIsDark] = React.useState(false);
+
+            function toggleTheme() {
+                setIsDark(prevTheme => !prevTheme);
+            }
+            return (
+                <div className={`container ${isDark ? "dark" : "light"}`}>
+                    <h1>{isDark ? "Dark Mode 🌙" : "Light Mode ☀️"}</h1>
+                    <button onClick={toggleTheme}>Toggle Theme</button>
+                </div>
+            );
+        }
+        ReactDOM.createRoot(document.getElementById("root")).render(<ToggleTheme />);
+    </script>
+</body>
+</html>
